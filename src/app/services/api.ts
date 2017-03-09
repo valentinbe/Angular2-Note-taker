@@ -1,6 +1,6 @@
 /* http is a service, how do we use services in other services ->
 with dependency injection  */
-/* injectable est un decorateur qui permet a nos services detre injecter par
+/* injectable est un decorateur qui permet a nos services detre injectés par
 dautre services */
 import { Injectable } from '@angular/core';
 import { Headers, Http, Response } from '@angular/http';

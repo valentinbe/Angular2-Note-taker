@@ -46,21 +46,17 @@ export class AuthService implements CanActivate {
   }
 
   isAuthorized(): boolean {
-    return Boolean(this.JWT);
+    return Boolean(window.localStorage.getItem(this.JWT_KEY));
   }
 
   /** check if user can go to the page */
   /** the router calls this method to check user rights and return true/false*/
   canActivate(): boolean {
-    const canActivate = this.isAuthorized();
-    this.onCanActivate(canActivate);
-    return canActivate;
-  }
-
-  onCanActivate(canActivate: boolean) {
-    if (!canActivate) {
+    const isAuth = this.isAuthorized();
+    if (!isAuth) {
       this.router.navigate(['', 'auth']);
     }
+    return isAuth
   }
 
   /** handles sign up and sign in 
@@ -80,6 +76,7 @@ export class AuthService implements CanActivate {
       .do((res: any) => this.storeHelper.update('user', res.data))
       .map((res: any) => res.data);
   }
+
 
   /** clear local storage
    * then purge store 

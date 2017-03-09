@@ -15,3 +15,4 @@
 - run `npm install`
 - run `npm start` to fire up dev server
 - open browser to [`http://localhost:3000`](http://localhost:3000)
+- run `npm run api` to launch the api 

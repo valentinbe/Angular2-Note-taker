@@ -118,18 +118,19 @@ export class Auth {
   /** toggle btw signup and signin modes */
   changeMode() {
     if (this.mode === 'signin') {
-      this.mode = 'S\'inscrire'
+      this.mode = 'signup'
       this.linkText = 'Déjà inscrit?'
     } else {
-      this.mode = 'Se connecter';
-      this.linkText = 'Pas encore inscrit?';
+      this.mode = 'signin';
+      this.linkText = 'Pas encore de compte?';
     }
   }
 
   /** methode pour s'authentifier */
+  /**  auth then redirect the user to the correct page */
   authenticate() {
     this.auth.authenticate(this.mode, this.user)
-    /**  auth then redirect the user to the correct page */
-    .subscribe(() => this.router.navigate(['']))
+    .subscribe(() => this.router.navigate(['']));
+    
   }
 }
