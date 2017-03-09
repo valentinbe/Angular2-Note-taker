@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Output, EventEmitter } from '@angular/core';
 
 @Component({
     selector: 'app-bar',
@@ -34,11 +34,19 @@ import { Component } from '@angular/core';
             <span class="link"
                 [routerLink]="['', 'about']"
             >About</span>
-            <span class="link">signout</span>
+            <span class="link"
+                (click)="onSignout()"
+            >signout</span>
             </div>
         </nav>
         </header>
     `
 })
 
-export class AppBar {};
+export class AppBar {
+    @Output() signOut = new EventEmitter();
+
+    onSignout() {
+        this.signOut.next();
+    }
+};
