@@ -71,4 +71,11 @@ export class ApiService {
         .catch(err => Observable.throw(err))
         .map(this.getJson)
     }
+
+    /** update API headers with the json webtoken from auth.ts */
+    setHeaders(headers) {
+        /** so add an element to the header */
+        Object.keys(headers)
+        .forEach(header => this.headers.set(header, headers[header]));
+    }
 };

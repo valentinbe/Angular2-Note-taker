@@ -14,7 +14,7 @@ export class NoteService {
     }
 
     createNote(note) {
-        /** the do gets the response and do something with it */
+        /** the ".do" gets the response and do something with it */
         return this.api.post(this.path, note)
         .do(savedNote => this.storeHelper.add('notes', savedNote));
         /** whoever subscribe to this subscribenote method we take the data from the server 

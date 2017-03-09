@@ -2,7 +2,7 @@
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Injectable } from '@angular/core';
 import 'rxjs/Rx';
-/** Store to store our application state and avoir loading multiple times the data */
+/** Store to store our application state and avoid loading multiple times the data */
 
 /** to keep our storage nice and type safe we create an interface */
 /** id is optional is a string or a number */
@@ -16,14 +16,20 @@ export interface Note {
   userId?: string
 }
 
+export interface User {
+  id?: string
+}
+
 /** interface for what our state looks like */
 export interface State {
-  notes: Array<Note>
+  notes: Array<Note>,
+  user: User
 }
 
 /** state app starts with */
 const defaultState: State = {
-  notes: []
+  notes: [],
+  user: {}
 }
 
 /** create the store, we pass it the default state */
@@ -32,6 +38,7 @@ const _store = new BehaviorSubject<State>(defaultState);
 
 /** create a service to interact with the store */
 @Injectable()
+
 export class Store {
   private _store = _store;
   /**  make observable that we will subscribe to to get data, called : changes*/

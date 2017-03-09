@@ -6,6 +6,7 @@ import { Store } from '../store';
 export class StoreHelper {
 
   constructor(private store: Store) {}
+  
   update(prop, state) {
     const currentState = this.store.getState();
     this.store.setState(Object.assign({}, currentState, { [prop]: state }));

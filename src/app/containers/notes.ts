@@ -39,7 +39,7 @@ import { Store } from '../store'
 })
 
 /* on crée une note quon va passer au component noteUI*/
-export class NotesContainer implements OnDestroy{
+export class NotesContainer implements OnDestroy {
     notes = [] 
 
     /** subscribe to observables */
