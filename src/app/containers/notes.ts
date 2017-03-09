@@ -1,4 +1,7 @@
 import { Component } from '@angular/core';
+import { NoteService } from '../services';
+
+
 
 @Component({
     selector: 'notes-container',
@@ -25,9 +28,8 @@ import { Component } from '@angular/core';
                 [noteTest]="note"
                 *ngFor="
                     let note of notes;
-                    let i = index;
                 "
-                (checked)="onNoteChecked(i)"
+                (checked)="onNoteChecked($event)"
             >
             </note-card>
             </div>
@@ -38,30 +40,25 @@ import { Component } from '@angular/core';
 
 /* on crée une note quon va passer au component noteUI*/
 export class NotesContainer {
-    notes = [
-        {
-            title: 'test titre', 
-            value: 'contenu test',
-            color: 'lightblue',
-        },
-        {
-            title: 'test titre2', 
-            value: 'contenu test2',
-            color: 'red',
-        },
-        {
-            title: 'test titre3', 
-            value: 'contenu test3',
-            color: 'yellow',
-        },
-    ] 
+    notes = [] 
 
-    onNoteChecked(i : number) {
-        /* splice removes elements from an array */
-        this.notes.splice(i, 1);
+    /** subscribe to observables */
+    constructor(private NotesService: NoteService) {
+        this.NotesService.getNotes()
+        .subscribe(resp => this.notes = resp.data); /** get the data from the response */
     }
 
     onCreateNote(note) {
-        this.notes.push(note);
+        this.NotesService.createNote(note)
+        .subscribe(note => this.notes.push(note));
+    }
+
+    onNoteChecked(note) {
+        /* splice removes elements from an array */
+        this.NotesService.completeNote(note)
+        .subscribe(note => {
+            const i = this.notes.findIndex(localNote => localNote.id === note.id);
+            this.notes.splice(i, 1);
+        })
     }
 };
