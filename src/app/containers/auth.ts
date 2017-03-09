@@ -44,9 +44,14 @@ import { Router } from '@angular/router';
       right: 20px;
     }
   `],
+  /** ngfor is the model created for us in the bckground, we create a local var that 
+   * access that object, we have acces to the state of this for to dicable 
+   * the signin button
+   */
   template: `
     <div class="auth row center-xs middle-xs">
-      <form class="col-xs-6 shadow-2" (ngSubmit)="authenticate()" #authForm="ngForm">
+      <form class="col-xs-6 shadow-2" (ngSubmit)="authenticate()" 
+        #authForm="ngForm">
         <div class="inputs row center-xs middle-xs">
           <h3 class="col-xs-8 title">
             {{ mode }}
@@ -60,7 +65,10 @@ import { Router } from '@angular/router';
             [(ngModel)]="user.email"
             #email="ngModel"
           >
-          <div class="error" [hidden]="email.valid || email.pristine">email is invalid</div>
+          <div class="error" 
+            [hidden]="email.valid || email.pristine"
+          >
+            email non valide</div>
           <input
             class="col-xs-8"
             type="password"
@@ -70,7 +78,10 @@ import { Router } from '@angular/router';
             [(ngModel)]="user.password"
             #password="ngModel"
           >
-          <div class="error" [hidden]="password.valid || password.pristine">password is required</div>
+          <div class="error" 
+            [hidden]="password.valid || password.pristine"
+          >
+            mot de passe requis</div>
           <div class="actions col-xs-12">
             <div class="row center-xs">
               <button
@@ -96,23 +107,29 @@ export class Auth {
     email: ''
   };
 
+  /** mode is to switch btw signup and signin */
   mode: string = 'signin';
-  linkText: string = 'Don\'t have an account?';
+  linkText: string = 'Pas encore de compte?';
 
-  constructor(private auth: AuthService, private router: Router) {}
+  constructor(
+    private auth: AuthService, 
+    private router: Router) {}
 
+  /** toggle btw signup and signin modes */
   changeMode() {
     if (this.mode === 'signin') {
-      this.mode = 'signup'
-      this.linkText = 'Already have an account?'
+      this.mode = 'S\'inscrire'
+      this.linkText = 'Déjà inscrit?'
     } else {
-      this.mode = 'signin';
-      this.linkText = 'Don\'t have an account?';
+      this.mode = 'Se connecter';
+      this.linkText = 'Pas encore inscrit?';
     }
   }
 
+  /** methode pour s'authentifier */
   authenticate() {
     this.auth.authenticate(this.mode, this.user)
+    /**  auth then redirect the user to the correct page */
     .subscribe(() => this.router.navigate(['']))
   }
 }
