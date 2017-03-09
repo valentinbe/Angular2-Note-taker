@@ -1,4 +1,6 @@
 /* tous les exports ici */
+
+import { Store } from './store'
 import * as services from './services' /* importe tous les services */
 
 /* pour les services */
@@ -11,6 +13,7 @@ const mapValuesToArray = (obj) => Object.keys(obj).map(key => obj[key]);
 tous les services a chaque fois quon en crée de nouveaux, 
 ca se fait automatiquement tant quils son contenu dans le dossier services*/
 export const providers = [
+    Store,
     ...mapValuesToArray(services)
 ]
 

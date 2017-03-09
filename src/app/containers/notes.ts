@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { NoteService } from '../services';
-
+import { Store } from '../store'
 
 
 @Component({
@@ -39,26 +39,37 @@ import { NoteService } from '../services';
 })
 
 /* on crée une note quon va passer au component noteUI*/
-export class NotesContainer {
+export class NotesContainer implements OnDestroy{
     notes = [] 
 
     /** subscribe to observables */
-    constructor(private NotesService: NoteService) {
+    constructor(
+        private NotesService: NoteService,
+        private store: Store
+        ) {
         this.NotesService.getNotes()
-        .subscribe(resp => this.notes = resp.data); /** get the data from the response */
+        .subscribe(); /** get the data from the response */
+
+        this.store.changes
+        .map(data => data.notes)
+        .subscribe(notes => this.notes = notes)
+        /** our component always receives the states from the store, 
+         * whenever the store updates subscription triggers and it updates this compoenent
+         */
     }
 
     onCreateNote(note) {
         this.NotesService.createNote(note)
-        .subscribe(note => this.notes.push(note));
+        .subscribe();
     }
 
     onNoteChecked(note) {
         /* splice removes elements from an array */
         this.NotesService.completeNote(note)
-        .subscribe(note => {
-            const i = this.notes.findIndex(localNote => localNote.id === note.id);
-            this.notes.splice(i, 1);
-        })
+        .subscribe();
+    }
+
+    ngOnDestroy() {
+        console.log('destroyed');
     }
 };
