@@ -52,13 +52,16 @@ export class AuthService implements CanActivate {
   /** check if user can go to the page */
   /** the router calls this method to check user rights and return true/false*/
   canActivate(): boolean {
-    const isAuth = this.isAuthorized();
-    if (!isAuth) {
-      this.router.navigate(['', 'auth']);
-    }
-    return isAuth
+    const canActivate = this.isAuthorized();
+    this.onCanActivate(canActivate);
+    return canActivate;
   }
 
+  onCanActivate(canActivate: boolean) {
+      if (!canActivate) {
+        this.router.navigate(['', 'auth']);
+      }
+    }
   /** handles sign up and sign in 
    * credits: password+username
    * path is either signup or signin
@@ -70,8 +73,8 @@ export class AuthService implements CanActivate {
    * 
    * map to get back the response 
   */
-  authenticate(path, credits): Observable<any> {
-    return this.api.post(`/${path}`, credits)
+  authenticate(path, creds): Observable<any> {
+    return this.api.post(`/${path}`, creds)
       .do((res: any) => this.setJwt(res.token))
       .do((res: any) => this.storeHelper.update('user', res.data))
       .map((res: any) => res.data);

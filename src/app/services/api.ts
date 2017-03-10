@@ -1,6 +1,6 @@
 /* http is a service, how do we use services in other services ->
 with dependency injection  */
-/* injectable est un decorateur qui permet a nos services detre injectés par
+/* injectable est un decorateur qui permet a nos services detre injecter par
 dautre services */
 import { Injectable } from '@angular/core';
 import { Headers, Http, Response } from '@angular/http';
@@ -31,7 +31,7 @@ export class ApiService {
         return resp.json();
     }
 
-    private checkForErrors(resp: Response): Response {
+    private checkForError(resp: Response): Response {
         if (resp.status >= 200 && resp.status < 300) {
             return resp;
         } else {
@@ -48,34 +48,36 @@ export class ApiService {
         /**can use .map cas cest un observable 
          * http methods by default return observables
         */
-        return this.http.get(`${this.api_url}${path}`, this.headers)
-        .map(this.checkForErrors)
+        return this.http.get(`${this.api_url}${path}`, { headers: this.headers })
+        .map(this.checkForError)
         .catch(err => Observable.throw(err))
         .map(this.getJson) /** if no errors get the json */
     }
 
     post(path: string, body): Observable<any> {
-        return this.http.post(
-            `${this.api_url}${path}`,
-            JSON.stringify(body),
-            {headers: this.headers}
-        )
-        .map(this.checkForErrors)
-        .catch(err => Observable.throw(err))
-        .map(this.getJson) /** if no errors get the json */
+    return this.http.post(
+      `${this.api_url}${path}`,
+      JSON.stringify(body),
+      { headers: this.headers }
+    )
+    .map(this.checkForError)
+    .catch(err => Observable.throw(err))
+    .map(this.getJson) /** if no errors get the json */
     }
 
-    delete(path: string): Observable<any> {
-        return this.http.delete(`${this.api_url}${path}`, this.headers)
-        .map(this.checkForErrors)
-        .catch(err => Observable.throw(err))
-        .map(this.getJson)
-    }
+    delete(path): Observable<any> {
+    return this.http.delete(
+      `${this.api_url}${path}`,
+      { headers: this.headers }
+    )
+    .map(this.checkForError)
+    .catch(err => Observable.throw(err))
+    .map(this.getJson)
+  }
 
     /** update API headers with the json webtoken from auth.ts */
     setHeaders(headers) {
         /** so add an element to the header */
-        Object.keys(headers)
-        .forEach(header => this.headers.set(header, headers[header]));
+        Object.keys(headers).forEach(header => this.headers.set(header, headers[header]));
     }
 };

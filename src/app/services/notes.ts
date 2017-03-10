@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from './api';
 import { StoreHelper } from './store-helper';
+import { Note } from '../store';
 import 'rxjs/Rx';
 
 @Injectable()
@@ -8,14 +9,14 @@ import 'rxjs/Rx';
 export class NoteService {
     path: string = '/notes';
     constructor(
-        private api: ApiService,
+        private apiService: ApiService,
         private storeHelper: StoreHelper
         ) {
     }
 
-    createNote(note) {
+    createNote(note: Note) {
         /** the ".do" gets the response and do something with it */
-        return this.api.post(this.path, note)
+        return this.apiService.post(this.path, note)
         .do(savedNote => this.storeHelper.add('notes', savedNote));
 
         /** whoever subscribe to this subscribenote method we take the data from the server 
@@ -24,15 +25,14 @@ export class NoteService {
     }
 
     getNotes() {
-        return this.api.get(this.path)
-        .do((resp: any) => this.storeHelper.update('notes', resp.data));
+        return this.apiService.get(this.path)
+        .do((res: any) => this.storeHelper.update('notes', res.data));
         /*** update overwrites the entire collection of notes */
     }
 
-    completeNote(note) {
+    completeNote(note: Note) {
         /** this notation because we use a RESTful interface */
-        return this.api.delete(`${this.path}/${note.id}`)
-        .do((resp: any) => this.storeHelper.findAndDelete('notes', resp.id));
+        return this.apiService.delete(`${this.path}/${note.id}`)
+        .do((res: any) => this.storeHelper.findAndDelete('notes', res.id));
     }
 }
-

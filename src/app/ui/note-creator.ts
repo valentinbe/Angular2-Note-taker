@@ -68,7 +68,6 @@ import { Component, Output, EventEmitter } from '@angular/core';
 
 /* dans le pre il y a un pipe qui transforme comment ca saffiche dans la page
 cest une transformation de vus qui tranfsforme au format json */
-
 export class NoteCreator {
     formExpanded: boolean = false;
     colors: string[] = ['#801321', '#456213', '#754213'];

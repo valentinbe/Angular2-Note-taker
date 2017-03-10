@@ -16,20 +16,14 @@ export interface Note {
   userId?: string
 }
 
-export interface User {
-  id?: string
-}
-
 /** interface for what our state looks like */
 export interface State {
-  notes: Array<Note>,
-  user: User
+  notes: Array<Note>
 }
 
 /** state app starts with */
-const defaultState: State = {
-  notes: [],
-  user: {}
+const defaultState = {
+  notes: []
 }
 
 /** create the store, we pass it the default state */
